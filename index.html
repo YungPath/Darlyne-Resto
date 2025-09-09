@@ -1,224 +1,138 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Darlyne Resto — Burgers</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Darlyne Resto</title>
   <style>
-    :root{--accent:#d92f2f;--muted:#666;--bg:#faf9f7}
-    *{box-sizing:border-box}
-    body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; margin:0;background:var(--bg);color:#222}
-    header{background:linear-gradient(90deg,#fff 0%, #fff0 100%);padding:18px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #eee}
-    .brand{display:flex;gap:12px;align-items:center}
-    .logo img{width:56px;height:56px;border-radius:12px;object-fit:cover}
-    .title{font-size:18px;font-weight:700}
-    .subtitle{font-size:12px;color:var(--muted)}
-    main{max-width:1100px;margin:26px auto;padding:0 18px}
-    .grid{display:grid;grid-template-columns:1fr 360px;gap:22px}
-
-    .menu{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
-    .card{background:white;border-radius:12px;padding:12px;box-shadow:0 6px 18px rgba(26,26,26,0.06);display:flex;flex-direction:column}
-    .thumb{height:160px;border-radius:10px;background:#f4f4f4;display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:10px}
-    .thumb img{width:100%;height:100%;object-fit:cover}
-    .name{font-weight:700;margin-bottom:6px}
-    .desc{font-size:13px;color:var(--muted);margin-bottom:10px}
-    .bottom{margin-top:auto;display:flex;align-items:center;justify-content:space-between}
-    .price{font-weight:700}
-    .btn{background:var(--accent);color:white;padding:8px 12px;border-radius:8px;border:none;cursor:pointer}
-
-    .cart{position:sticky;top:18px}
-    .panel{background:white;border-radius:12px;padding:14px;box-shadow:0 10px 26px rgba(26,26,26,0.06)}
-    .cart-item{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px dashed #eee}
-    .cart-item:last-child{border-bottom:0}
-    .qty{background:#f1f1f1;padding:6px 9px;border-radius:8px}
-    .muted{color:var(--muted);font-size:13px}
-    .total{display:flex;justify-content:space-between;font-weight:800;padding:12px 0;font-size:18px}
-    .checkout{width:100%;margin-top:10px}
-
-    label{display:block;font-weight:600;margin:8px 0 6px}
-    input,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #eee}
-    .small{font-size:13px;color:var(--muted)}
-
-    footer{padding:18px;text-align:center;color:var(--muted);font-size:13px;margin-top:30px}
-
-    @media(max-width:880px){.grid{grid-template-columns:1fr}.cart{position:relative;margin-top:18px}}
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #fff8f5;
+      color: #333;
+    }
+    header {
+      background: #d92f2f;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    header img {
+      max-height: 60px;
+    }
+    .menu {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      padding: 1rem;
+    }
+    .item {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 1rem;
+      text-align: center;
+    }
+    .item img {
+      max-width: 100%;
+      border-radius: 10px;
+    }
+    .cart {
+      background: #fff;
+      padding: 1rem;
+      margin: 1rem;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+    }
+    button {
+      background: #d92f2f;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
   <header>
-    <div class="brand">
-      <div class="logo"><img src="images/logo.png" alt="Darlyne Resto Logo"></div>
-      <div>
-        <div class="title">Darlyne Resto</div>
-        <div class="subtitle">Best burgers in town 🍔 — Order by WhatsApp</div>
-      </div>
-    </div>
-    <nav>
-      <a href="#menu">Menu</a>
-    </nav>
+    <img src="https://via.placeholder.com/150x60?text=Darlyne+Resto" alt="Darlyne Resto Logo">
+    <h1>Darlyne Resto</h1>
+    <p>Delicious Burgers & Juices</p>
   </header>
 
-  <main>
-    <div class="grid">
-      <section>
-        <h2 id="menu">Menu</h2>
-        <p class="small">Tap items to add them to the cart. Prices in Gdes.</p>
-
-        <div class="menu" id="menuList"></div>
-
-        <section style="margin-top:18px">
-          <h3>How it works</h3>
-          <ol class="small">
-            <li>Add items to cart.</li>
-            <li>Go to checkout and fill name, phone, address.</li>
-            <li>Click "Place order" — you'll get a WhatsApp notification.</li>
-          </ol>
-        </section>
-      </section>
-
-      <aside class="cart">
-        <div class="panel">
-          <h3>Your Order</h3>
-          <div id="cartItems" style="min-height:80px" class="muted">No items yet — add something delicious 🍔</div>
-
-          <div id="cartFooter" style="display:none">
-            <div class="total"><span>Total</span><span id="totalPrice">0</span></div>
-
-            <div>
-              <label for="customerName">Name</label>
-              <input id="customerName" placeholder="Customer name" />
-
-              <label for="customerPhone">Phone</label>
-              <input id="customerPhone" placeholder="e.g. +509 3879-7803" />
-
-              <label for="customerAddress">Address</label>
-              <textarea id="customerAddress" rows="2" placeholder="Delivery address"></textarea>
-
-              <button id="placeOrder" class="btn checkout">Place order (WhatsApp)</button>
-              <p class="small" style="margin-top:8px">By placing an order you accept that we'll send order details to the restaurant via WhatsApp.</p>
-            </div>
-          </div>
-        </div>
-      </aside>
+  <section class="menu">
+    <div class="item">
+      <img src="https://via.placeholder.com/250?text=Cheese+Burger+%2B+Juice" alt="Cheese Burger + Juice">
+      <h3>Cheese Burger + Juice</h3>
+      <p>1000 Gdes</p>
+      <button onclick="addToCart('Cheese Burger + Juice', 1000)">Add to Cart</button>
     </div>
+    <div class="item">
+      <img src="https://via.placeholder.com/250?text=Cheese+Burger+%2B+Fries+%2B+Juice" alt="Cheese Burger + Fries + Juice">
+      <h3>Cheese Burger + Fries + Juice</h3>
+      <p>1250 Gdes</p>
+      <button onclick="addToCart('Cheese Burger + Fries + Juice', 1250)">Add to Cart</button>
+    </div>
+    <div class="item">
+      <img src="https://via.placeholder.com/250?text=Hamburger" alt="Hamburger">
+      <h3>Hamburger</h3>
+      <p>500 Gdes</p>
+      <button onclick="addToCart('Hamburger', 500)">Add to Cart</button>
+    </div>
+    <div class="item">
+      <img src="https://via.placeholder.com/250?text=Juice" alt="Juice">
+      <h3>Juice</h3>
+      <p>200 Gdes</p>
+      <button onclick="addToCart('Juice', 200)">Add to Cart</button>
+    </div>
+  </section>
 
-    <footer>
-      Darlyne Resto — Burgers • WhatsApp notifications powered by CallMeBot
-    </footer>
-  </main>
+  <section class="cart">
+    <h2>Your Cart</h2>
+    <ul id="cart"></ul>
+    <p><strong>Total: </strong><span id="total">0</span> Gdes</p>
+    <h3>Checkout</h3>
+    <input type="text" id="name" placeholder="Your Name"><br><br>
+    <input type="text" id="phone" placeholder="Your Phone"><br><br>
+    <input type="text" id="address" placeholder="Your Address"><br><br>
+    <button onclick="placeOrder()">Place Order via WhatsApp</button>
+  </section>
 
   <script>
-    const CALLMEBOT_API_KEY = 'YOUR_CALLMEBOT_API_KEY';
-    const CALLMEBOT_PHONE = '+50938797803';
+    let cart = [];
 
-    const PRODUCTS = [
-      { id: 'p1', name: 'Cheese Burger + Juice', price: 1000, desc: 'Cheese burger served with a fresh juice', thumb: 'images/cheeseburger-juice.jpg' },
-      { id: 'p2', name: 'Cheese Burger + Fries + Juice', price: 1250, desc: 'Cheese burger, fries, and juice - full combo', thumb: 'images/cheeseburger-fries-juice.jpg' },
-      { id: 'p3', name: 'Hamburger', price: 500, desc: 'Classic hamburger', thumb: 'images/hamburger.jpg' },
-      { id: 'p4', name: 'Juice', price: 200, desc: 'Fresh fruit juice', thumb: 'images/juice.jpg' }
-    ];
-
-    let cart = {};
-    function formatPrice(v){ return v.toLocaleString('en-US') + ' Gdes'; }
-
-    function renderMenu(){
-      const el = document.getElementById('menuList');
-      el.innerHTML = '';
-      PRODUCTS.forEach(p => {
-        const card = document.createElement('div'); card.className = 'card';
-        card.innerHTML = `
-          <div class="thumb"><img src="${p.thumb}" alt="${p.name}"></div>
-          <div class="name">${p.name}</div>
-          <div class="desc">${p.desc}</div>
-          <div class="bottom">
-            <div class="price">${formatPrice(p.price)}</div>
-            <button class="btn" data-id="${p.id}">Add</button>
-          </div>
-        `;
-        el.appendChild(card);
-      });
-
-      document.querySelectorAll('.card .btn').forEach(b => b.addEventListener('click', e => {
-        const id = e.currentTarget.getAttribute('data-id'); addToCart(id);
-      }));
+    function addToCart(item, price) {
+      cart.push({ item, price });
+      renderCart();
     }
 
-    function addToCart(id){ cart[id] = cart[id] || 0; cart[id]++; renderCart(); }
-    function removeFromCart(id){ if(!cart[id]) return; cart[id]--; if(cart[id] <= 0) delete cart[id]; renderCart(); }
-
-    function renderCart(){
-      const container = document.getElementById('cartItems');
-      const footer = document.getElementById('cartFooter');
-      const totalEl = document.getElementById('totalPrice');
-      const keys = Object.keys(cart);
-      if(keys.length === 0){ container.innerHTML = '<div class="muted">No items yet — add something delicious 🍔</div>'; footer.style.display = 'none'; return; }
-      footer.style.display = 'block';
-
-      container.innerHTML = '';
+    function renderCart() {
+      const cartList = document.getElementById('cart');
+      cartList.innerHTML = '';
       let total = 0;
-      keys.forEach(id => {
-        const p = PRODUCTS.find(x => x.id === id);
-        const qty = cart[id];
-        const item = document.createElement('div'); item.className = 'cart-item';
-        item.innerHTML = `
-          <div style="flex:1">
-            <div style="font-weight:700">${p.name}</div>
-            <div class="muted">${formatPrice(p.price)} &times; ${qty}</div>
-          </div>
-          <div style="text-align:right">
-            <div class="qty">${qty}</div>
-            <div style="margin-top:8px"><button class="btn small" data-remove="${id}" style="background:#eee;color:#333;padding:6px 8px;border-radius:8px;border:0">-</button></div>
-          </div>
-        `;
-        container.appendChild(item);
-        total += p.price * qty;
+      cart.forEach((c, index) => {
+        total += c.price;
+        const li = document.createElement('li');
+        li.textContent = `${c.item} - ${c.price} Gdes`;
+        cartList.appendChild(li);
       });
-
-      totalEl.textContent = formatPrice(total);
-      document.querySelectorAll('[data-remove]').forEach(b => {
-        b.addEventListener('click', e => {
-          const id = e.currentTarget.getAttribute('data-remove'); removeFromCart(id);
-        });
-      });
+      document.getElementById('total').textContent = total;
     }
 
-    async function placeOrder(){
-      const name = document.getElementById('customerName').value.trim();
-      const phone = document.getElementById('customerPhone').value.trim();
-      const address = document.getElementById('customerAddress').value.trim();
-      if(!name || !phone || !address){ alert('Please fill name, phone and address.'); return; }
-      const items = Object.keys(cart).map(id => {
-        const p = PRODUCTS.find(x => x.id === id);
-        return `${p.name} x${cart[id]} (${p.price} Gdes)`;
-      }).join('\n');
-      const total = Object.keys(cart).reduce((s,id)=>{const p=PRODUCTS.find(x=>x.id===id);return s + p.price*cart[id];},0);
+    function placeOrder() {
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const address = document.getElementById('address').value;
+      let orderDetails = cart.map(c => `${c.item} - ${c.price} Gdes`).join(', ');
+      let total = document.getElementById('total').textContent;
 
-      const message = `New Order 🚨\nRestaurant: Darlyne Resto\nName: ${name}\nPhone: ${phone}\nAddress: ${address}\n\nItems:\n${items}\n\nTotal: ${total} Gdes`;
+      let message = `New Order%0AName: ${name}%0APhone: ${phone}%0AAddress: ${address}%0AItems: ${orderDetails}%0ATotal: ${total} Gdes`;
 
-      const encoded = encodeURIComponent(message);
-      const callmeUrl = `https://api.callmebot.com/whatsapp.php?phone=${encodeURIComponent(CALLMEBOT_PHONE)}&text=${encoded}&apikey=${encodeURIComponent(CALLMEBOT_API_KEY)}`;
-
-      try{
-        const res = await fetch(callmeUrl, { method: 'GET', mode: 'cors' });
-        if(res.ok){
-          alert('Order placed — notification sent via WhatsApp. Thank you!');
-          clearOrder();
-          return;
-        } else {
-          throw new Error('CallMeBot returned non-OK');
-        }
-      } catch(err){
-        console.warn('CallMeBot failed. Falling back to WhatsApp Web. Error:', err);
-        const waLink = `https://wa.me/${CALLMEBOT_PHONE.replace('+','')}?text=${encoded}`;
-        const open = confirm('Automatic WhatsApp notification failed. Open WhatsApp Web with the message?');
-        if(open){ window.open(waLink, '_blank'); clearOrder(); }
-      }
+      // WhatsApp link fallback
+      window.open(`https://wa.me/50938797803?text=${message}`, '_blank');
     }
-
-    function clearOrder(){ cart = {}; renderCart(); document.getElementById('customerName').value=''; document.getElementById('customerPhone').value=''; document.getElementById('customerAddress').value=''; }
-
-    renderMenu(); renderCart();
-    document.getElementById('placeOrder').addEventListener('click', placeOrder);
   </script>
 </body>
 </html>
