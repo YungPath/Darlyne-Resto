@@ -47,6 +47,13 @@
       max-width: 100%;
       border-radius: 12px;
     }
+    select, input {
+      width: 95%;
+      padding: 8px;
+      margin-top: 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
     button {
       background-color: #d32f2f;
       color: white;
@@ -60,16 +67,31 @@
     button:hover {
       background-color: #b71c1c;
     }
-    footer {
-      background-color: #d32f2f;
-      color: white;
-      text-align: center;
+    .cart {
+      background: white;
+      margin: 20px;
       padding: 15px;
-      margin-top: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .cart h2 {
+      color: #d32f2f;
+    }
+    .cart-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .cart-item img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+      border-radius: 6px;
     }
   </style>
 </head>
 <body>
+
   <header>
     <img src="https://raw.githubusercontent.com/YungPath/Darlyne-Resto/main/Logo1.png" alt="Darlyne Resto Logo">
     <h1>Darlyne Resto</h1>
@@ -77,45 +99,113 @@
   </header>
 
   <section class="menu">
+    <!-- Cheese Burger + Juice -->
     <div class="item">
       <img src="https://raw.githubusercontent.com/YungPath/Darlyne-Resto/main/Cheeseburger%2BJuice.jpg.png" alt="Cheese Burger + Juice">
       <h3>Cheese Burger + Juice</h3>
       <p>1000 Gdes</p>
-      <button onclick="order('Cheese Burger + Juice', 1000)">Order Now</button>
+      <select id="cheeseJuice">
+        <option value="Lemon Juice">Lemon Juice</option>
+        <option value="Couronne">Couronne</option>
+        <option value="7 Up">7 Up</option>
+        <option value="Coca Cola">Coca Cola</option>
+      </select>
+      <button onclick="addToCart('Cheese Burger + Juice', 1000, document.getElementById('cheeseJuice').value)">Add to Cart</button>
     </div>
 
+    <!-- Cheese Burger + Fries + Juice -->
     <div class="item">
       <img src="https://raw.githubusercontent.com/YungPath/Darlyne-Resto/main/Cheeseburger%2BFries%2BJuice.jpg.png" alt="Cheese Burger + Fries + Juice">
       <h3>Cheese Burger + Fries + Juice</h3>
       <p>1250 Gdes</p>
-      <button onclick="order('Cheese Burger + Fries + Juice', 1250)">Order Now</button>
+      <select id="cheeseFriesJuice">
+        <option value="Lemon Juice">Lemon Juice</option>
+        <option value="Couronne">Couronne</option>
+        <option value="7 Up">7 Up</option>
+        <option value="Coca Cola">Coca Cola</option>
+      </select>
+      <button onclick="addToCart('Cheese Burger + Fries + Juice', 1250, document.getElementById('cheeseFriesJuice').value)">Add to Cart</button>
     </div>
 
+    <!-- Hamburger -->
     <div class="item">
-      <img src="https://via.placeholder.com/250?text=Hamburger" alt="Hamburger">
+      <img src="https://raw.githubusercontent.com/YungPath/Darlyne-Resto/1ee68b39032b1fa1546cb66b98ead0be1fd4eeab/hamburger.jpg.png" alt="Hamburger">
       <h3>Hamburger</h3>
       <p>500 Gdes</p>
-      <button onclick="order('Hamburger', 500)">Order Now</button>
+      <button onclick="addToCart('Hamburger', 500)">Add to Cart</button>
     </div>
 
+    <!-- Juice -->
     <div class="item">
-      <img src="https://via.placeholder.com/250?text=Juice" alt="Juice">
+      <img src="https://raw.githubusercontent.com/YungPath/Darlyne-Resto/1ee68b39032b1fa1546cb66b98ead0be1fd4eeab/couronne.jpg.png" alt="Juice">
       <h3>Juice</h3>
       <p>200 Gdes</p>
-      <button onclick="order('Juice', 200)">Order Now</button>
+      <select id="standaloneJuice">
+        <option value="Lemon Juice">Lemon Juice</option>
+        <option value="Couronne">Couronne</option>
+        <option value="7 Up">7 Up</option>
+        <option value="Coca Cola">Coca Cola</option>
+      </select>
+      <button onclick="addToCart('Juice', 200, document.getElementById('standaloneJuice').value)">Add to Cart</button>
     </div>
   </section>
 
-  <footer>
-    <p>📍 Order now on WhatsApp: <a href="https://wa.me/50938797803" style="color: #fbc02d; font-weight: bold;">+509 3879-7803</a></p>
-    <p>&copy; 2025 Darlyne Resto. All rights reserved.</p>
-  </footer>
+  <!-- Cart -->
+  <div class="cart">
+    <h2>Your Cart</h2>
+    <ul id="cartList"></ul>
+    <p><strong>Total: </strong><span id="total">0</span> Gdes</p>
+    <h3>Checkout</h3>
+    <input type="text" id="name" placeholder="Your Name">
+    <input type="text" id="phone" placeholder="Your Phone">
+    <input type="text" id="address" placeholder="Your Address">
+    <button onclick="placeOrder()">Place Order via WhatsApp</button>
+  </div>
 
   <script>
-    function order(item, price) {
-      const message = `Hello Darlyne Resto! 👋 I would like to order: ${item} - ${price} Gdes`;
-      const phone = "50938797803"; 
-      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, "_blank");
+    const juiceImages = {
+      "Lemon Juice": "https://via.placeholder.com/40?text=Lemon",
+      "Couronne": "https://raw.githubusercontent.com/YungPath/Darlyne-Resto/1ee68b39032b1fa1546cb66b98ead0be1fd4eeab/couronne.jpg.png",
+      "7 Up": "https://via.placeholder.com/40?text=7Up",
+      "Coca Cola": "https://raw.githubusercontent.com/YungPath/Darlyne-Resto/1ee68b39032b1fa1546cb66b98ead0be1fd4eeab/Coca%20cola.jpg.png"
+    };
+
+    let cart = [];
+
+    function addToCart(item, price, juice = '') {
+      let image = '';
+      if (juice) {
+        item += ` (${juice})`;
+        image = juiceImages[juice];
+      }
+      cart.push({ item, price, image });
+      renderCart();
+    }
+
+    function renderCart() {
+      const cartList = document.getElementById('cartList');
+      cartList.innerHTML = '';
+      let total = 0;
+      cart.forEach(c => {
+        total += c.price;
+        const li = document.createElement('li');
+        li.className = 'cart-item';
+        li.innerHTML = `${c.image ? `<img src="${c.image}" alt="${c.item}">` : ''}${c.item} - ${c.price} Gdes`;
+        cartList.appendChild(li);
+      });
+      document.getElementById('total').textContent = total;
+    }
+
+    function placeOrder() {
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const address = document.getElementById('address').value;
+      let orderDetails = cart.map(c => `${c.item} - ${c.price} Gdes`).join('%0A');
+      let total = document.getElementById('total').textContent;
+
+      const message = `New Order%0AName: ${name}%0APhone: ${phone}%0AAddress: ${address}%0AItems:%0A${orderDetails}%0ATotal: ${total} Gdes`;
+      const whatsappNumber = '50938797803';
+      window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
     }
   </script>
 </body>
