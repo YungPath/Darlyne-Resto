@@ -154,6 +154,7 @@
     <input type="text" id="phone" placeholder="Your Phone">
     <input type="text" id="address" placeholder="Your Address">
     <button onclick="placeOrder()">Place Order via WhatsApp</button>
+    <p id="thankYouMessage" style="color:green; font-weight:bold; margin-top:10px; white-space: pre-line;"></p>
   </div>
 
   <script>
@@ -206,6 +207,14 @@
       const message = `New Order%0AName: ${name}%0APhone: ${phone}%0AAddress: ${address}%0AItems:%0A${orderDetails}%0ATotal: ${total} Gdes`;
       const whatsappNumber = '50938797803';
       window.open(`https://wa.me/${whatsappNumber}?text=${message}`, '_blank');
+
+      // Show French thank-you message
+      document.getElementById('thankYouMessage').textContent = 
+        `Merci ${name} pour ta commande !\nAu plaisir de te servir à nouveau.\nDarlyne Resto`;
+
+      // Clear cart
+      cart = [];
+      renderCart();
     }
   </script>
 
